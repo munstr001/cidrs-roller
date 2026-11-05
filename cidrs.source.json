@@ -1,0 +1,21 @@
+{
+  "file": "cidrs.txt",
+  "country_code": "RU",
+  "ip_version": 4,
+  "source": "IPdeny country IPv4 zone",
+  "source_url": "https://www.ipdeny.com/ipblocks/data/countries/ru.zone",
+  "source_snapshot_date": "2026-11-04",
+  "source_last_modified": "Wed, 04 Nov 2026 11:11:03 GMT",
+  "downloaded_at_utc": "2026-11-04T18:32:30.748447+00:00",
+  "prefixes": 11482,
+  "addresses": 45245248,
+  "prefix_min": 13,
+  "prefix_max": 26,
+  "sha256": "082bc03d84cffae02be4b0a349820cbfa45662500bbbe23a0e50f9f7082e757b",
+  "upstream_sha256": "551bd8f42af6516624b186c062ca557eb5192f7d58b731c56ff5c6ee9e98f772",
+  "processing": "Strict IPv4 validation and numeric sorting; no aggregation or subdivision of prefixes.",
+  "country_semantics": "RU classification from the provider; registration/allocation country is not a guarantee of physical IP location.",
+  "copyright_file": "Copyrights.txt",
+  "copyright_source_url": "https://www.ipdeny.com/ipblocks/data/countries/Copyrights.txt",
+  "copyright_sha256": "d15546e0bb48ed5f410db0122e3f205120d09f0cbe4d43c84b3a0437709a5ef2"
+}

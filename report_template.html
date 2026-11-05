@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Результаты сканирования — CIDR Scanner</title>
+<style>
+:root{color-scheme:light;--bg:#f1f4f6;--surface:#fff;--surface-soft:#f7f9fb;--ink:#192d42;--muted:#64778b;--line:#dce5ed;--line-strong:#c5d3de;--accent:#087b74;--accent-soft:#e5f5f1;--accent-ink:#086a64;--good:#11724b;--good-bg:#e6f5ed;--bad:#b6474b;--bad-bg:#fff0f0;--warn:#916014;--warn-bg:#fff6df;--idle:#687789;--idle-bg:#edf1f5;--shadow:0 9px 30px rgba(27,47,66,.045);--hero:#142d42;--hero-muted:#b3c7d7;--focus:#2b8eaa}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e1822;--surface:#162533;--surface-soft:#1c2e3e;--ink:#e8f0f7;--muted:#a1b3c4;--line:#2d4255;--line-strong:#405b71;--accent:#7cd8c2;--accent-soft:#183d3c;--accent-ink:#9ce9d9;--good:#91dfb2;--good-bg:#183d31;--bad:#f0a3a7;--bad-bg:#432d35;--warn:#efcd8a;--warn-bg:#453d29;--idle:#b3c3d3;--idle-bg:#293b4b;--shadow:0 9px 30px rgba(0,0,0,.1);--hero:#142d42;--hero-muted:#b3c7d7;--focus:#7dd2eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.55}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.42}button,input,select{outline:none}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}button{touch-action:manipulation}a{color:var(--accent-ink)}[hidden]{display:none!important}.shell{max-width:1440px;margin:auto;padding:28px 36px 36px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:13px;letter-spacing:.08em}.brand-mark{width:31px;height:31px;display:grid;place-items:center;background:var(--accent);color:var(--surface);border-radius:9px;font-size:17px;font-weight:700;letter-spacing:0}.topbar-note{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px}.offline-label{display:flex;align-items:center;gap:6px}.offline-label::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--good)}.theme-button{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 11px;font-size:12px}.hero{position:relative;overflow:hidden;background:var(--hero);color:#fff;border-radius:17px;padding:30px 34px;display:flex;align-items:center;justify-content:space-between;gap:32px;box-shadow:var(--shadow)}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#92d2c9;margin:0 0 10px}.hero h1{font-size:30px;font-weight:700;line-height:1.25;letter-spacing:-.035em;margin:0 0 10px}.hero-description{color:var(--hero-muted);max-width:660px;font-size:13px;margin:0;line-height:1.7}.hero-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}.hero-fact{font-size:11px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);color:#d3e2ed;padding:4px 8px;border-radius:5px}.coverage{width:235px;flex-shrink:0;padding-left:30px;border-left:1px solid rgba(255,255,255,.14)}.coverage-top{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--hero-muted);font-size:11px}.coverage-value{font-size:39px;color:#a4e9d9;font-weight:650;letter-spacing:-.04em;line-height:1.4}.coverage-track{height:6px;border-radius:20px;background:rgba(255,255,255,.14);overflow:hidden;margin:9px 0}.coverage-fill{height:100%;background:#8fdcc6;min-width:0;max-width:100%;border-radius:inherit}.coverage-detail{font-size:11px;line-height:1.6;color:var(--hero-muted);margin:0}.metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:18px 0}.metric{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:17px 18px;box-shadow:var(--shadow);min-width:0}.metric-label{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:7px;white-space:nowrap}.metric-label i{width:6px;height:6px;border-radius:50%;background:var(--idle);flex-shrink:0}.metric.good i{background:var(--good)}.metric.bad i{background:var(--bad)}.metric.warn i{background:var(--warn)}.metric-value{font-variant-numeric:tabular-nums;font-size:27px;line-height:1.3;font-weight:650;letter-spacing:-.035em}.metric.good .metric-value{color:var(--good)}.metric.bad .metric-value{color:var(--bad)}.metric.warn .metric-value{color:var(--warn)}.metric-note{font-size:10px;color:var(--muted);margin-top:5px}.information{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:start;margin:20px 0 23px;padding:14px 17px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px}.information p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}.information strong{color:var(--ink);font-weight:600}.generated{font-size:10px;line-height:1.7;white-space:nowrap;text-align:right;color:var(--muted)}.report-panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);overflow:hidden}.panel-heading{padding:22px 23px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.panel-heading h2{margin:0;font-size:18px;letter-spacing:-.025em;font-weight:650}.panel-heading p{color:var(--muted);font-size:12px;margin:4px 0 0}.result-count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;padding-top:5px;white-space:nowrap}.filters{display:flex;gap:7px;flex-wrap:wrap;padding:0 23px 17px}.filter-button{display:flex;align-items:center;gap:7px;padding:7px 10px;background:var(--surface-soft);color:var(--muted);border:1px solid var(--line);border-radius:7px;font-size:11px;white-space:nowrap;transition:background .12s,border-color .12s}.filter-button:hover{border-color:var(--line-strong);color:var(--ink)}.filter-button[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent-soft);border-color:var(--accent);font-weight:600}.filter-count{font-size:10px;line-height:1.5;padding:0 5px;background:var(--surface);border:1px solid var(--line);border-radius:4px;font-weight:550;opacity:.9}.filter-button[aria-pressed="true"] .filter-count{border-color:transparent;color:var(--accent-ink)}.toolbar{display:flex;align-items:flex-end;gap:12px;padding:16px 23px;background:var(--surface-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.control{display:flex;flex-direction:column;gap:5px;min-width:0}.control label{font-size:10px;color:var(--muted)}.search-control{flex:1}.search-input,select{height:38px;border-radius:7px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:8px 11px;font-size:12px;width:100%;min-width:0}.search-input::placeholder{color:var(--muted)}.sort-control{width:190px}.page-size-control{width:132px}.table-heading{display:grid;grid-template-columns:205px minmax(0,1fr) 155px;gap:20px;padding:12px 23px 10px;color:var(--muted);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:var(--surface)}.table-heading span:last-child{text-align:right}.network-row{border-top:1px solid var(--line)}.network-summary{display:grid;grid-template-columns:205px minmax(0,1fr) 155px;gap:20px;align-items:center;padding:15px 23px;min-height:101px}.network-row.expanded{background:var(--surface-soft)}.network-open{display:block;text-align:left;border:0;background:none;color:var(--ink);padding:5px 0;width:100%;border-radius:4px}.network-cidr{display:flex;align-items:center;gap:9px;font-family:"Cascadia Code",Consolas,monospace;font-size:13px;font-weight:650}.chevron{font-family:Arial,sans-serif;font-size:15px;color:var(--muted);display:inline-block;line-height:1;transform:rotate(0);transition:transform .15s;flex-shrink:0}.expanded .chevron{transform:rotate(90deg)}.network-subtitle{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:6px;padding-left:18px}.sample-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}.sample-chip{background:var(--surface-soft);border:1px solid var(--line);border-radius:7px;padding:7px 9px;min-width:0}.network-row.expanded .sample-chip{background:var(--surface)}.sample-label{display:block;font-size:9px;line-height:1.3;color:var(--muted);margin-bottom:4px}.sample-value{display:block;font-family:"Cascadia Code",Consolas,monospace;font-size:11px;line-height:1.5;overflow-wrap:anywhere;color:var(--ink)}.sample-state{display:flex;align-items:center;gap:4px;font-size:9px;line-height:1.4;margin-top:3px;color:var(--idle)}.sample-state::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}.status-reachable .sample-state{color:var(--good)}.status-unreachable .sample-state{color:var(--bad)}.status-error .sample-state{color:var(--warn)}.sample-more{font-size:10px;color:var(--muted);grid-column:1/-1;margin-top:-2px}.network-result{text-align:right;min-width:0}.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:550;padding:4px 7px;border-radius:5px;background:var(--idle-bg);color:var(--idle);white-space:nowrap}.status-badge::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}.badge-all_replied,.badge-reachable{background:var(--good-bg);color:var(--good)}.badge-partial_replies{background:var(--accent-soft);color:var(--accent-ink)}.badge-no_replies,.badge-unreachable{background:var(--bad-bg);color:var(--bad)}.badge-errors,.badge-error{background:var(--warn-bg);color:var(--warn)}.network-score{font-size:11px;margin-top:7px;color:var(--muted);font-variant-numeric:tabular-nums}.network-score strong{color:var(--ink);font-weight:600}.error-indicator{font-size:9px;color:var(--warn);margin-top:3px}.network-details{padding:0 23px 21px 41px}.detail-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding-top:3px}.detail-heading h3{font-size:12px;margin:0;font-weight:650}.detail-heading span{color:var(--muted);font-size:10px}.detail-samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.sample-detail{min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:8px;overflow:hidden}.sample-detail-header{padding:12px 13px;border-bottom:1px solid var(--line)}.sample-detail-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}.sample-detail-title strong{font-size:10px;color:var(--muted);font-weight:500}.sample-detail-ip{font-family:"Cascadia Code",Consolas,monospace;font-weight:650;font-size:12px;overflow-wrap:anywhere}.sample-detail-body{padding:11px 13px}.sample-meta{color:var(--muted);font-size:10px;line-height:1.7;margin:0 0 8px;overflow-wrap:anywhere}.sample-reason{font-size:11px;line-height:1.7;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}.probe-table{width:100%;border-collapse:collapse;font-size:10px;line-height:1.6;text-align:left;table-layout:fixed}.probe-table th{font-size:9px;color:var(--muted);font-weight:500;padding:7px 4px;border-bottom:1px solid var(--line);background:var(--surface-soft)}.probe-table td{padding:8px 4px;vertical-align:top;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.probe-table tr:last-child td{border-bottom:0}.probe-table th:first-child{width:23px}.probe-table th:nth-child(2){width:66px}.probe-table th:last-child{width:57px;text-align:right}.probe-table td:last-child{text-align:right;font-variant-numeric:tabular-nums}.probe-status-reachable{color:var(--good)}.probe-status-unreachable{color:var(--bad)}.probe-status-error{color:var(--warn)}.detail-duration-note{font-size:10px;color:var(--muted);line-height:1.7;margin:11px 0 0}.empty-state{text-align:center;padding:55px 20px 60px;color:var(--muted)}.empty-state strong{display:block;color:var(--ink);font-size:16px;margin-bottom:7px}.empty-state p{font-size:12px;margin:0}.pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 23px;border-top:1px solid var(--line);background:var(--surface-soft)}.page-status{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}.page-controls{display:flex;gap:7px}.page-button{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:7px 11px;font-size:11px;border-radius:6px}.page-button:hover:not(:disabled){border-color:var(--accent);color:var(--accent-ink)}.footer{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;color:var(--muted);font-size:10px;line-height:1.8;padding:20px 2px 0}.footer p{margin:0;max-width:750px}.footer-tag{font-variant-numeric:tabular-nums;white-space:nowrap}.error-banner{margin:18px 0;padding:18px;border:1px solid var(--bad);background:var(--bad-bg);color:var(--bad);border-radius:10px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.partial-filter-panel{margin:0 23px 17px;padding:15px 17px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:9px;background:var(--surface-soft)}
+.partial-filter-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:13px}.partial-filter-top h3{font-size:12px;font-weight:650;margin:0;color:var(--ink)}.reset-answer-filter{font-size:10px;color:var(--accent-ink);background:transparent;border:0;border-radius:4px;padding:3px 0;white-space:nowrap}.reset-answer-filter:hover{text-decoration:underline}
+.partial-filter-controls{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}.answer-positions{border:0;padding:0;margin:0;min-width:0}.answer-positions legend{font-size:10px;color:var(--muted);padding:0;margin-bottom:7px}.answer-position-options{display:flex;flex-wrap:wrap;gap:7px}.answer-position{display:flex;align-items:center;gap:6px;padding:7px 9px;font-size:11px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap}.answer-position.is-selected{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}.answer-position input,.answered-search-toggle input{width:14px;height:14px;margin:0;accent-color:var(--accent);flex-shrink:0}.answer-match-control{min-width:220px;max-width:290px;flex:1}.answer-filter-hint{font-size:10px;line-height:1.8;color:var(--muted);margin:11px 0 0;max-width:950px}.answered-search-toggle{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink);margin-top:13px;cursor:pointer;width:fit-content}
+@media(max-width:550px){.partial-filter-panel{margin:0 14px 14px;padding:12px}.partial-filter-top{align-items:flex-start;gap:6px;flex-direction:column;margin-bottom:12px}.partial-filter-top h3{font-size:11px}.reset-answer-filter{font-size:9px}.partial-filter-controls{display:block}.answer-positions legend,.answer-match-control label{font-size:9px}.answer-position-options{gap:5px}.answer-position{font-size:10px;padding:7px;gap:5px}.answer-position input,.answered-search-toggle input{width:13px;height:13px}.answer-match-control{margin-top:12px;min-width:0;max-width:none}.answered-search-toggle{font-size:10px;align-items:flex-start;line-height:1.7;margin-top:12px}.answered-search-toggle input{margin-top:2px}.answer-filter-hint{font-size:9px;line-height:1.8;margin-top:9px}}
+@media(min-width:1600px){.shell{padding-top:35px}.hero{padding-top:36px;padding-bottom:36px}}
+@media(max-width:1100px){.shell{padding:22px}.metrics{gap:9px}.metric{padding:14px}.metric-value{font-size:24px}.metric-label{font-size:10px;white-space:normal}.network-summary,.table-heading{grid-template-columns:175px minmax(0,1fr) 140px;gap:14px;padding-left:18px;padding-right:18px}.network-cidr{font-size:12px}.sample-chip{padding:7px}.sample-value{font-size:10px}.detail-samples{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding:25px;gap:22px}.hero h1{font-size:25px}.coverage{width:180px;padding-left:20px}.coverage-value{font-size:34px}.information{grid-template-columns:1fr}.generated{text-align:left;white-space:normal}.table-heading{display:none}.network-summary{grid-template-columns:minmax(0,1fr) 155px;gap:12px;padding:15px 18px}.network-open{grid-column:1;grid-row:1}.network-result{grid-column:2;grid-row:1}.sample-grid{grid-column:1/-1;grid-row:2}.sample-value{font-size:12px}.sample-label,.sample-state{font-size:10px}.network-details{padding-left:18px;padding-right:18px}.network-cidr{font-size:13px}.sample-chip{padding:9px 10px}}
+@media(max-width:550px){.shell{padding:15px 12px 24px}.topbar{margin-bottom:16px;gap:10px}.brand{font-size:10px;gap:8px}.brand-mark{width:27px;height:27px;font-size:15px;border-radius:7px}.offline-label{display:none}.theme-button{font-size:10px;padding:6px 8px}.hero{padding:23px 20px;display:block;border-radius:12px}.hero h1{font-size:25px;max-width:280px}.hero-description{font-size:12px}.hero-facts{margin-top:14px;gap:5px}.hero-fact{font-size:10px}.coverage{width:auto;border-left:0;border-top:1px solid rgba(255,255,255,.14);padding:14px 0 0;margin-top:21px;display:grid;grid-template-columns:1fr auto;gap:0 15px;align-items:center}.coverage-top{font-size:11px}.coverage-value{font-size:29px;grid-column:2;grid-row:1/3}.coverage-track{grid-column:1;margin:6px 0 0}.coverage-detail{grid-column:1/-1;font-size:10px;margin-top:9px}.metrics{gap:7px;margin:12px 0}.metric{padding:12px 10px;border-radius:8px}.metric-label{font-size:9px;gap:4px;min-height:23px;line-height:1.3;align-items:flex-start}.metric-label i{margin-top:3px;width:4px;height:4px}.metric-value{font-size:23px}.metric-note{font-size:9px}.information{margin:15px 0 18px;padding:12px;gap:9px}.information p{font-size:10px;line-height:1.8}.generated{font-size:9px}.panel-heading{padding:18px 14px 13px;gap:10px}.panel-heading h2{font-size:16px}.panel-heading p{font-size:10px}.result-count{font-size:10px;padding-top:3px}.filters{gap:6px;padding:0 14px 14px}.filter-button{font-size:10px;padding:6px 8px;gap:5px}.filter-count{font-size:9px}.toolbar{padding:12px 14px;display:grid;grid-template-columns:1fr 125px;gap:10px}.search-control{grid-column:1/-1}.sort-control,.page-size-control{width:auto}.control label{font-size:9px}.search-input,select{font-size:11px;height:36px;padding:7px 9px}.network-summary{padding:13px 14px;grid-template-columns:minmax(0,1fr) 125px;gap:11px}.network-cidr{font-size:12px;gap:7px}.network-subtitle{font-size:9px;margin-top:5px;padding-left:15px}.network-score{font-size:10px;margin-top:5px}.status-badge{font-size:9px;padding:3px 5px;gap:4px}.sample-grid{gap:5px}.sample-chip{padding:7px 6px;border-radius:6px}.sample-label{font-size:8px;margin-bottom:5px}.sample-value{font-size:10px;letter-spacing:-.025em}.sample-state{font-size:8px;gap:3px;margin-top:4px}.sample-more{font-size:9px}.network-details{padding:0 14px 15px}.detail-heading h3{font-size:11px}.detail-heading span{font-size:9px}.detail-samples{grid-template-columns:1fr;gap:9px}.sample-detail-title strong{font-size:10px}.sample-detail-ip{font-size:13px}.sample-reason{font-size:11px}.probe-table{font-size:10px}.probe-table th:first-child{width:24px}.probe-table th:nth-child(2){width:72px}.probe-table th:last-child{width:65px}.pagination{padding:13px 14px;gap:10px}.page-status{font-size:10px}.page-button{font-size:10px;padding:7px 9px}.page-controls{gap:5px}.footer{display:block;padding-top:17px;font-size:9px}.footer-tag{margin-top:8px}.empty-state{padding:40px 17px}.empty-state strong{font-size:14px}.empty-state p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">↗</span>CIDR SCANNER</div><div class="topbar-note"><span class="offline-label">Работает без интернета</span><button id="theme-toggle" class="theme-button" type="button" aria-label="Переключить тему">Тёмная тема</button></div></div>
+  <header class="hero"><div><p class="eyebrow">Отчёт по результатам проверки</p><h1>Результаты сканирования</h1><p class="hero-description">Доступность конкретных IP, ответы по образцам и подробности каждой попытки — в одном отчёте.</p><div class="hero-facts"><span id="protocol-fact" class="hero-fact">—</span><span id="attempts-fact" class="hero-fact">—</span><span id="samples-fact" class="hero-fact">—</span><span id="source-fact" class="hero-fact">—</span></div></div><div class="coverage"><div class="coverage-top"><span>Обработано образцов</span></div><strong id="coverage-value" class="coverage-value">—</strong><div class="coverage-track" role="progressbar" aria-label="Доля проверенных IP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="coverage-fill" class="coverage-fill"></div></div><p id="coverage-detail" class="coverage-detail">Подготовка отчёта…</p></div></header>
+  <section class="metrics" aria-label="Сводка по IP"><article class="metric"><div class="metric-label"><i aria-hidden="true"></i>Запланировано IP</div><div id="kpi-expected" class="metric-value">—</div><div class="metric-note">образцов, не всех IP сети</div></article><article class="metric"><div class="metric-label"><i aria-hidden="true"></i>Проверено IP</div><div id="kpi-checked" class="metric-value">—</div><div class="metric-note">с сохранённым результатом</div></article><article class="metric good"><div class="metric-label"><i aria-hidden="true"></i>Ответили</div><div id="kpi-reachable" class="metric-value">—</div><div class="metric-note">успешная попытка</div></article><article class="metric bad"><div class="metric-label"><i aria-hidden="true"></i>Не ответили</div><div id="kpi-unreachable" class="metric-value">—</div><div class="metric-note">ответ не получен</div></article><article class="metric warn"><div class="metric-label"><i aria-hidden="true"></i>Ошибки</div><div id="kpi-errors" class="metric-value">—</div><div class="metric-note">нужна повторная проверка</div></article><article class="metric"><div class="metric-label"><i aria-hidden="true"></i>Не проверено</div><div id="kpi-pending" class="metric-value">—</div><div class="metric-note">нет результата измерения</div></article></section>
+  <aside class="information"><div><p><strong>Ответ одного или нескольких образцов не подтверждает доступность всей подсети.</strong> <span id="method-note">Проверялись конкретные IP.</span></p><p id="source-note">Источник подключения не указан.</p></div><div class="generated">Сформирован<br><time id="generated-at">—</time><br>Время в часовом поясе браузера</div></aside>
+  <div id="report-error" class="error-banner" role="alert" hidden></div>
+  <noscript><p class="error-banner">Для просмотра таблицы и фильтров включите JavaScript в браузере. Исходные результаты доступны в файлах JSONL.</p></noscript>
+  <section class="report-panel" aria-labelledby="networks-heading">
+    <div class="panel-heading"><div><h2 id="networks-heading">Сети и образцы IP</h2><p>Откройте сеть, чтобы увидеть историю попыток.</p></div><div id="result-count" class="result-count" role="status" aria-live="polite">Подготовка…</div></div>
+    <div id="filters" class="filters" role="group" aria-label="Фильтр сетей"></div>
+    <section id="partial-filter-panel" class="partial-filter-panel" aria-label="Фильтр частичных ответов" hidden>
+      <div class="partial-filter-top"><h3>Какие IP ответили</h3><button id="reset-answer-filter" class="reset-answer-filter" type="button">Сбросить фильтр ответов</button></div>
+      <div class="partial-filter-controls">
+        <fieldset class="answer-positions" aria-label="Позиции ответивших IP"><legend>Позиции ответивших IP</legend><div class="answer-position-options">
+          <label class="answer-position"><input id="answer-first" type="checkbox" name="answer-position" value="first" aria-describedby="answer-filter-hint">Первый IP</label>
+          <label class="answer-position"><input id="answer-middle" type="checkbox" name="answer-position" value="middle" aria-describedby="answer-filter-hint">Средний IP</label>
+          <label class="answer-position"><input id="answer-last" type="checkbox" name="answer-position" value="last" aria-describedby="answer-filter-hint">Последний IP</label>
+        </div></fieldset>
+        <div class="control answer-match-control"><label for="answer-match">Совпадение ответов</label><select id="answer-match" aria-describedby="answer-filter-hint"><option value="any">Хотя бы один выбранный</option><option value="exact">Точное сочетание</option></select></div>
+      </div>
+      <label class="answered-search-toggle"><input id="answered-search" type="checkbox">Искать только среди ответивших IP</label>
+      <p id="answer-filter-hint" class="answer-filter-hint">Без выбора позиций показаны все частичные ответы с учётом поиска.</p>
+    </section>
+    <div class="toolbar"><div class="control search-control"><label for="search">Найти IP или подсеть</label><input id="search" class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Например, 5.188 или 31.28.32.0/19"></div><div class="control sort-control"><label for="sort">Сортировка</label><select id="sort"><option value="cidr_asc">IP по возрастанию</option><option value="cidr_desc">IP по убыванию</option><option value="replies_desc">Больше ответов</option><option value="errors_desc">Больше ошибок</option><option value="checked_desc">Больше проверено</option></select></div><div class="control page-size-control"><label for="page-size">Сетей на странице</label><select id="page-size"><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></div></div>
+    <div class="table-heading" aria-hidden="true"><span>Подсеть</span><span>Выбранные IP и их ответы</span><span>Результат выборки</span></div><div id="network-list" aria-label="Результаты по сетям"></div><div id="empty-state" class="empty-state" hidden><strong>Совпадений не найдено</strong><p>Измените IP, подсеть или выбранный фильтр.</p></div><nav class="pagination" aria-label="Страницы результатов"><span id="page-status" class="page-status">—</span><div class="page-controls"><button id="previous-page" type="button" class="page-button" aria-label="Предыдущая страница">← Назад</button><button id="next-page" type="button" class="page-button" aria-label="Следующая страница">Далее →</button></div></nav>
+  </section>
+  <footer class="footer"><p>Первый, средний и последний — позиции IP в выборке подсети, а не номера попыток ping. Частичные ответы объединены в одну категорию. Непроверенные образцы не считаются неответившими.</p><div class="footer-tag">Локальный HTML · CIDR Scanner</div></footer>
+</main>
+<script id="scan-data" type="application/json">__SCAN_REPORT_DATA__</script>
+<script>
+(function () {
+  'use strict';
+
+  const numberFormat = new Intl.NumberFormat('ru-RU');
+  const decimalFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
+  const percentageFormat = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+  const dateFormat = new Intl.DateTimeFormat('ru-RU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const pluralRules = new Intl.PluralRules('ru-RU');
+  const byId = function (id) { return document.getElementById(id); };
+  const countText = function (value) { return numberFormat.format(value); };
+  const finite = function (value) { return typeof value === 'number' && Number.isFinite(value) ? value : 0; };
+  const statusNames = { reachable: 'Ответил', unreachable: 'Нет ответа', error: 'Ошибка', not_checked: 'Не проверен' };
+  const classificationNames = { all_replied: 'Все ответили', partial_replies: 'Частичный ответ', no_replies: 'Нет ответов', errors: 'Ошибка проверки', incomplete: 'Не завершена' };
+
+  function node(tag, className, text) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined && text !== null) element.textContent = String(text);
+    return element;
+  }
+
+  function formattedDate(value) {
+    const date = new Date(value);
+    return Number.isNaN(date.valueOf()) ? 'Время не указано' : dateFormat.format(date);
+  }
+
+  function status(sample) {
+    return Object.prototype.hasOwnProperty.call(statusNames, sample.status) ? sample.status : 'not_checked';
+  }
+
+  function position(sample, index) {
+    if (sample.sample_position === 'first') return 'Первый IP';
+    if (sample.sample_position === 'middle') return 'Средний IP';
+    if (sample.sample_position === 'last') return 'Последний IP';
+    if (sample.sample_position === 'single') return 'Единственный IP';
+    const sampleIndex = typeof sample.sample_index === 'number' ? sample.sample_index : index;
+    return 'Образец №' + (sampleIndex + 1);
+  }
+
+  function networkWord(value) {
+    return { one: 'сеть', few: 'сети', many: 'сетей', other: 'сети' }[pluralRules.select(value)];
+  }
+
+  function badge(text, kind) {
+    return node('span', 'status-badge badge-' + kind, text);
+  }
+
+  function theme(value) {
+    document.documentElement.dataset.theme = value;
+    byId('theme-toggle').textContent = value === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+    byId('theme-toggle').setAttribute('aria-pressed', String(value === 'dark'));
+  }
+
+  try {
+    theme(localStorage.getItem('cidr-report-theme') === 'dark' ? 'dark' : 'light');
+  } catch (unused) {
+    theme('light');
+  }
+  byId('theme-toggle').addEventListener('click', function () {
+    const value = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    theme(value);
+    try { localStorage.setItem('cidr-report-theme', value); } catch (unused) { /* File URLs can deny local storage. */ }
+  });
+
+  try {
+    const data = JSON.parse(byId('scan-data').textContent);
+    if (!data || !data.summary || !Array.isArray(data.networks)) throw new Error('Invalid report payload');
+    const summary = data.summary;
+    const source = summary.source_identity || {};
+    const networks = data.networks;
+    const entries = networks.map(function (record, index) {
+      const samples = Array.isArray(record.samples) ? record.samples : [];
+      const cidr = String(record.cidr || '');
+      const octets = cidr.split('/')[0].split('.').map(Number);
+      const numericIp = octets.reduce(function (total, part) { return total * 256 + (Number.isFinite(part) ? part : 0); }, 0);
+      return { record: record, samples: samples, index: index, numericIp: numericIp, prefix: Number(cidr.split('/')[1]) || 0,
+        search: (cidr + ' ' + samples.map(function (sample) { return sample.ip || ''; }).join(' ')).toLowerCase() };
+    });
+    const totals = networks.reduce(function (result, network) {
+      ['expected', 'checked', 'reachable', 'unreachable', 'error', 'not_checked'].forEach(function (key) { result[key] += finite(network[key]); });
+      return result;
+    }, { expected: 0, checked: 0, reachable: 0, unreachable: 0, error: 0, not_checked: 0 });
+    const expected = finite(summary.expected_address_count) || totals.expected;
+    const checked = finite(summary.address_count) || totals.checked;
+    const completion = expected ? Math.max(0, Math.min(100, checked / expected * 100)) : 0;
+    byId('kpi-expected').textContent = countText(expected);
+    byId('kpi-checked').textContent = countText(checked);
+    byId('kpi-reachable').textContent = countText(totals.reachable);
+    byId('kpi-unreachable').textContent = countText(totals.unreachable);
+    byId('kpi-errors').textContent = countText(totals.error);
+    byId('kpi-pending').textContent = countText(totals.not_checked);
+    byId('coverage-value').textContent = percentageFormat.format(completion) + '%';
+    byId('coverage-fill').style.width = completion + '%';
+    document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', String(Math.round(completion * 100) / 100));
+    byId('coverage-detail').textContent = countText(checked) + ' из ' + countText(expected) + ' IP · ' + countText(networks.length) + ' ' + networkWord(networks.length) + ' в исходном списке';
+    byId('generated-at').textContent = formattedDate(summary.generated_at);
+    if (typeof summary.generated_at === 'string') byId('generated-at').dateTime = summary.generated_at;
+    const protocol = source.protocol === 'tcp' ? 'TCP' : 'ICMP';
+    byId('protocol-fact').textContent = protocol + (source.protocol === 'tcp' && source.port ? ' · порт ' + source.port : ' · ping');
+    byId('attempts-fact').textContent = 'Попыток на IP: до ' + (finite(source.attempts) || '—');
+    byId('samples-fact').textContent = 'Образцов на сеть: до ' + (finite(source.samples) || '—');
+    const sourceLabel = typeof source.source_label === 'string' && source.source_label !== 'unspecified' ? source.source_label.trim() : '';
+    byId('source-fact').textContent = sourceLabel ? 'Источник: ' + sourceLabel : 'Источник не указан';
+    byId('source-note').textContent = sourceLabel ? 'Подпись источника: ' + sourceLabel + '. Она задана пользователем и не подтверждает оператора или режим ограничений.' : 'Источник подключения не указан. Оператор, VPN и режим ограничений в этом журнале не зафиксированы.';
+    byId('method-note').textContent = source.protocol === 'tcp' ? 'Успешное TCP-соединение не подтверждает работу TLS, HTTP или приложения.' : 'Ответ на ping не подтверждает доступность TCP/HTTPS или включение IP в мобильный белый список.';
+
+    const filters = [
+      { id: 'all', label: 'Все сети', accepts: function () { return true; } },
+      { id: 'answered', label: 'Есть ответы', accepts: function (record) { return finite(record.reachable) > 0; } },
+      { id: 'all_replied', label: 'Все ответили', accepts: function (record) { return record.classification === 'all_replied'; } },
+      { id: 'partial_replies', label: 'Частичный ответ', accepts: function (record) { return record.classification === 'partial_replies'; } },
+      { id: 'no_replies', label: 'Нет ответов', accepts: function (record) { return record.classification === 'no_replies'; } },
+      { id: 'errors', label: 'Ошибки', accepts: function (record) { return finite(record.error) > 0; } },
+      { id: 'incomplete', label: 'Не завершены', accepts: function (record) { return record.classification === 'incomplete'; } }
+    ];
+    const state = { filter: 'all', search: '', sort: 'cidr_asc', page: 1, pageSize: 25, expanded: new Set(),
+      answerPositions: new Set(), answerMatch: 'any', answeredSearch: false };
+    const positionInputs = Array.from(document.querySelectorAll('input[name="answer-position"]'));
+    filters.forEach(function (filter) {
+      filter.count = entries.reduce(function (total, entry) { return total + (filter.accepts(entry.record) ? 1 : 0); }, 0);
+      const button = node('button', 'filter-button');
+      button.type = 'button';
+      button.dataset.filter = filter.id;
+      button.setAttribute('aria-pressed', String(filter.id === state.filter));
+      button.append(node('span', '', filter.label), node('span', 'filter-count', countText(filter.count)));
+      button.addEventListener('click', function () { state.filter = filter.id; state.page = 1; render(); });
+      filter.button = button;
+      byId('filters').append(button);
+    });
+
+    function makeSampleChip(sample, index) {
+      const sampleStatus = status(sample);
+      const chip = node('div', 'sample-chip status-' + sampleStatus);
+      chip.append(node('span', 'sample-label', position(sample, index)), node('span', 'sample-value', sample.ip || 'IP не указан'), node('span', 'sample-state', statusNames[sampleStatus]));
+      return chip;
+    }
+
+    function makeSampleDetails(sample, index) {
+      const sampleStatus = status(sample);
+      const card = node('section', 'sample-detail');
+      const header = node('div', 'sample-detail-header');
+      const title = node('div', 'sample-detail-title');
+      title.append(node('strong', '', position(sample, index)), badge(statusNames[sampleStatus], sampleStatus));
+      header.append(title, node('div', 'sample-detail-ip', sample.ip || 'IP не указан'));
+      const body = node('div', 'sample-detail-body');
+      if (sampleStatus === 'not_checked') {
+        body.append(node('p', 'sample-meta', 'Проверка этого образца ещё не выполнялась.'));
+      } else {
+        body.append(node('p', 'sample-meta', 'Попыток: ' + (finite(sample.attempts) || '—') + '\n' + formattedDate(sample.checked_at)));
+        if (sample.reason) body.append(node('p', 'sample-reason', sample.reason));
+        const probes = Array.isArray(sample.probes) ? sample.probes : [];
+        if (probes.length) {
+          const table = node('table', 'probe-table');
+          table.setAttribute('aria-label', 'Попытки проверки ' + (sample.ip || 'IP'));
+          const thead = node('thead');
+          const labels = node('tr');
+          ['№', 'Результат', 'Причина', 'Время, мс'].forEach(function (text) { const th = node('th', '', text); th.scope = 'col'; labels.append(th); });
+          thead.append(labels);
+          const tbody = node('tbody');
+          probes.forEach(function (probe, probeIndex) {
+            const probeStatus = status(probe);
+            const tr = node('tr');
+            const duration = typeof probe.elapsed_ms === 'number' && Number.isFinite(probe.elapsed_ms) ? decimalFormat.format(probe.elapsed_ms) : '—';
+            tr.append(node('td', '', probeIndex + 1), node('td', 'probe-status-' + probeStatus, statusNames[probeStatus]), node('td', '', probe.reason || '—'), node('td', '', duration));
+            tbody.append(tr);
+          });
+          table.append(thead, tbody);
+          body.append(table);
+        }
+      }
+      card.append(header, body);
+      return card;
+    }
+
+    function makeDetails(entry) {
+      const details = node('div', 'network-details');
+      details.id = 'network-details-' + entry.index;
+      const heading = node('div', 'detail-heading');
+      heading.append(node('h3', '', 'Результаты образцов'), node('span', '', protocol + (source.protocol === 'tcp' && source.port ? ' · порт ' + source.port : '')));
+      const samples = node('div', 'detail-samples');
+      entry.samples.forEach(function (sample, index) { samples.append(makeSampleDetails(sample, index)); });
+      details.append(heading, samples, node('p', 'detail-duration-note', 'Время попытки — продолжительность её выполнения. Для ping оно включает запуск системной команды и не является чистым сетевым RTT.'));
+      return details;
+    }
+
+    function makeNetwork(entry) {
+      const record = entry.record;
+      const cidr = String(record.cidr || 'Подсеть не указана');
+      const expanded = state.expanded.has(entry.index);
+      const row = node('article', 'network-row' + (expanded ? ' expanded' : ''));
+      row.dataset.cidr = cidr;
+      row.dataset.reachable = String(finite(record.reachable));
+      row.dataset.classification = String(record.classification || 'incomplete');
+      const summaryRow = node('div', 'network-summary');
+      const open = node('button', 'network-open');
+      open.type = 'button';
+      open.setAttribute('aria-label', 'Подробности сети ' + cidr);
+      open.setAttribute('aria-expanded', String(expanded));
+      open.setAttribute('aria-controls', 'network-details-' + entry.index);
+      const name = node('span', 'network-cidr');
+      const chevron = node('span', 'chevron', '›');
+      chevron.setAttribute('aria-hidden', 'true');
+      name.append(chevron, node('span', '', cidr));
+      open.append(name, node('span', 'network-subtitle', 'Проверено ' + finite(record.checked) + ' из ' + finite(record.expected) + ' образцов'));
+      open.addEventListener('click', function () {
+        const isExpanded = open.getAttribute('aria-expanded') === 'true';
+        open.setAttribute('aria-expanded', String(!isExpanded));
+        row.classList.toggle('expanded', !isExpanded);
+        if (isExpanded) {
+          state.expanded.delete(entry.index);
+          const details = row.querySelector('.network-details');
+          if (details) details.remove();
+        } else {
+          state.expanded.add(entry.index);
+          row.append(makeDetails(entry));
+        }
+      });
+      const samples = node('div', 'sample-grid');
+      entry.samples.slice(0, 3).forEach(function (sample, index) { samples.append(makeSampleChip(sample, index)); });
+      if (entry.samples.length > 3) samples.append(node('span', 'sample-more', 'Ещё ' + (entry.samples.length - 3) + ' образцов — в подробностях'));
+      const result = node('div', 'network-result');
+      const classification = Object.prototype.hasOwnProperty.call(classificationNames, record.classification) ? record.classification : 'incomplete';
+      result.append(badge(classificationNames[classification], classification));
+      const score = node('div', 'network-score');
+      score.append(node('strong', '', finite(record.reachable)), document.createTextNode(' / ' + finite(record.expected) + ' IP ответили'));
+      result.append(score);
+      if (finite(record.error) && classification !== 'errors') result.append(node('div', 'error-indicator', 'Ошибок: ' + finite(record.error)));
+      summaryRow.append(open, samples, result);
+      row.append(summaryRow);
+      if (expanded) row.append(makeDetails(entry));
+      return row;
+    }
+
+    function compare(left, right) {
+      let difference = 0;
+      if (state.sort === 'replies_desc') difference = finite(right.record.reachable) - finite(left.record.reachable);
+      else if (state.sort === 'errors_desc') difference = finite(right.record.error) - finite(left.record.error);
+      else if (state.sort === 'checked_desc') difference = finite(right.record.checked) - finite(left.record.checked);
+      if (difference) return difference;
+      const byAddress = left.numericIp - right.numericIp || left.prefix - right.prefix || left.index - right.index;
+      return state.sort === 'cidr_desc' ? -byAddress : byAddress;
+    }
+
+    function matchesAnswerPositions(entry) {
+      if (state.filter !== 'partial_replies' || !state.answerPositions.size) return true;
+      // Derive positions from actual successful samples, not a summary field.
+      // Additional intermediate/single samples must also count for exact matching.
+      const actual = new Set();
+      entry.samples.forEach(function (sample, index) {
+        if (sample.status === 'reachable') actual.add(typeof sample.sample_position === 'string' ? sample.sample_position : 'sample_' + index);
+      });
+      if (state.answerMatch === 'exact') {
+        return actual.size === state.answerPositions.size && Array.from(state.answerPositions).every(function (selected) { return actual.has(selected); });
+      }
+      return Array.from(state.answerPositions).some(function (selected) { return actual.has(selected); });
+    }
+
+    function matchesSearch(entry) {
+      if (!state.search) return true;
+      if (state.filter !== 'partial_replies' || !state.answeredSearch) return entry.search.includes(state.search);
+      return String(entry.record.cidr || '').toLowerCase().includes(state.search) || entry.samples.some(function (sample) {
+        return sample.status === 'reachable' && String(sample.ip || '').toLowerCase().includes(state.search);
+      });
+    }
+
+    function updateAnswerControls() {
+      byId('partial-filter-panel').hidden = state.filter !== 'partial_replies';
+      positionInputs.forEach(function (input) {
+        input.checked = state.answerPositions.has(input.value);
+        input.parentElement.classList.toggle('is-selected', input.checked);
+      });
+      byId('answer-match').value = state.answerMatch;
+      byId('answered-search').checked = state.answeredSearch;
+      let hint;
+      if (!state.answerPositions.size) hint = 'Без выбора позиций показаны все частичные ответы с учётом поиска.';
+      else if (state.answerMatch === 'exact') hint = 'Ответили только выбранные образцы. Если ответил ещё один образец, сеть не подходит под точное сочетание.';
+      else hint = 'Ответил хотя бы один из выбранных образцов. Другие образцы тоже могли ответить.';
+      if (state.answeredSearch) hint += ' Поиск IP учитывает только успешные ответы; поиск подсети по CIDR сохраняется.';
+      byId('answer-filter-hint').textContent = hint;
+    }
+
+    function render() {
+      const active = filters.find(function (filter) { return filter.id === state.filter; }) || filters[0];
+      const filtered = entries.filter(function (entry) { return active.accepts(entry.record) && matchesAnswerPositions(entry) && matchesSearch(entry); });
+      filtered.sort(compare);
+      const pages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+      state.page = Math.max(1, Math.min(pages, state.page));
+      filters.forEach(function (filter) { filter.button.setAttribute('aria-pressed', String(filter.id === state.filter)); });
+      updateAnswerControls();
+      byId('result-count').textContent = countText(filtered.length) + ' ' + networkWord(filtered.length);
+      byId('page-status').textContent = 'Страница ' + state.page + ' из ' + pages;
+      byId('previous-page').disabled = state.page <= 1;
+      byId('next-page').disabled = state.page >= pages;
+      byId('empty-state').hidden = filtered.length > 0;
+      const fragment = document.createDocumentFragment();
+      const offset = (state.page - 1) * state.pageSize;
+      filtered.slice(offset, offset + state.pageSize).forEach(function (entry) { fragment.append(makeNetwork(entry)); });
+      byId('network-list').replaceChildren(fragment);
+    }
+
+    positionInputs.forEach(function (input) {
+      input.addEventListener('change', function () {
+        if (input.checked) state.answerPositions.add(input.value);
+        else state.answerPositions.delete(input.value);
+        state.page = 1;
+        render();
+      });
+    });
+    byId('answer-match').addEventListener('change', function (event) { state.answerMatch = event.target.value === 'exact' ? 'exact' : 'any'; state.page = 1; render(); });
+    byId('answered-search').addEventListener('change', function (event) { state.answeredSearch = event.target.checked; state.page = 1; render(); });
+    byId('reset-answer-filter').addEventListener('click', function () {
+      state.answerPositions.clear();
+      state.answerMatch = 'any';
+      state.answeredSearch = false;
+      state.page = 1;
+      render();
+    });
+
+    let searchTimer;
+    byId('search').addEventListener('input', function (event) {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () { state.search = event.target.value.trim().toLowerCase(); state.page = 1; render(); }, 120);
+    });
+    byId('sort').addEventListener('change', function (event) { state.sort = event.target.value; state.page = 1; render(); });
+    byId('page-size').addEventListener('change', function (event) { state.pageSize = Math.max(1, Math.min(100, Number(event.target.value) || 25)); state.page = 1; render(); });
+    byId('previous-page').addEventListener('click', function () { state.page -= 1; render(); });
+    byId('next-page').addEventListener('click', function () { state.page += 1; render(); });
+    render();
+    document.body.dataset.reportReady = 'true';
+  } catch (error) {
+    const message = byId('report-error');
+    message.hidden = false;
+    message.textContent = 'Не удалось прочитать данные отчёта. Пересоздайте report.html командой export_results.py из исходных журналов.';
+    byId('result-count').textContent = 'Данные недоступны';
+    document.body.dataset.reportReady = 'error';
+    console.error('CIDR report initialization failed', error);
+  }
+}());
+</script>
+</body>
+</html>

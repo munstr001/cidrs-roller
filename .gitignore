@@ -1,3 +1,53 @@
-*
-!/cidrs.txt
-!/real-check-avaibility.py
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Scan journals and reports, including custom --output-dir locations.
+results/
+exports/
+outputs/
+grouped/
+*.jsonl
+*.html
+!report_template.html
+manifest.json
+reachable-cidrs.txt
+reachable-ips.txt
+.scan.lock
+.reachable-cidrs.*.tmp
+.report.*.tmp
+working-*.txt
+*.log
+
+# Generated screenshots can contain a user's scan results.
+docs/screenshots/
+
+# Local settings, credentials and release archives.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Editor and operating-system files.
+.idea/
+.vscode/
+.DS_Store
+._*
+__MACOSX/
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~

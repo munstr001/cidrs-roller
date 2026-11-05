@@ -1,0 +1,19 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+
+# Preserve dataset and third-party notice hashes on every operating system.
+cidrs.txt -text
+# The upstream notice also retains its original trailing spaces.
+Copyrights.txt -text -whitespace
+
+*.png binary
+*.jpg binary
+*.jpeg binary
